@@ -90,6 +90,10 @@ class TestGitTarballs(unittest.TestCase):
                              ghb.get_commit_from_spec('example_pkg',
                                                       plain_version=True))
 
+    def test_get_upstream_commit(self):
+        self.assertEqual('921b7c514fb79bd4b8a023f34d22df4efe5406ad',
+                         ghb.get_upstream_commit(CHANGELOG))
+
     def test_parse_changelog(self):
         self.assertEqual(
             [('921b7c514fb79bd4b8a023f34d22df4efe5406ad',
