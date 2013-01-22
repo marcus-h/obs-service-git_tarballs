@@ -130,22 +130,30 @@ def package_version(upstream_version, upstream_commit):
                              upstream_commit[:COMMIT_HASH_SIZE])
 
 
-def update_spec_file(package_version, tarball_parent_dir, filename):
+def parse_update_spec_file(contents, package_version,
+                           tarball_parent_dir, filename):
+    contents = re.sub(r'\n((Version:\s+).*)\n',
+                      r'\n\g<2>%s\n' % package_version,
+                      contents, count=1)
+    # only replace the "-n" option, leave everything else intact
+    contents = re.sub(r'\n(%setup.*?-n\s+)(\S+?)(|[ \t]+.*?)\n',
+                      r'\n\g<1>%s\g<3>\n' % tarball_parent_dir,
+                      contents, count=1)
+    contents = re.sub(r'\n((Source0?:\s+).*)\n',
+                      r'\n\g<2>%s\n' % filename,
+                      contents, count=1)
+    return contents
+
+
+def update_spec_files(package_version, tarball_parent_dir, filename):
     for specfile in glob.glob('./*.spec'):
         try:
             f = open(specfile, 'r+')
             contents = f.read()
             f.seek(0)
             f.truncate()
-            contents = re.sub(r'\n((Version:\s+).*)\n',
-                              r'\n\g<2>%s\n' % package_version,
-                              contents, count=1)
-            contents = re.sub(r'\n((%setup\s+).*)\n',
-                              r'\n\g<2>-q -n %s\n' % tarball_parent_dir,
-                              contents, count=1)
-            contents = re.sub(r'\n((Source0?:\s+).*)\n',
-                              r'\n\g<2>%s\n' % filename,
-                              contents, count=1)
+            contents = parse_update_spec_file(contents, package_version,
+                                              tarball_parent_dir, filename)
             f.write(contents)
         finally:
             f.close()
@@ -251,7 +259,7 @@ if __name__ == '__main__':
     if not package_commit:
         # on first run, we only set the fields in the spec file;
         # there are no changes
-        update_spec_file(package_version, tarball_parent_dir, args.filename)
+        update_spec_files(package_version, tarball_parent_dir, args.filename)
         print "Initialized .spec file with git_tarball."
         sys.exit()
 
@@ -259,4 +267,4 @@ if __name__ == '__main__':
                              package_commit, args.email)
     if changes:
         update_changes_file(args.package, changes)
-        update_spec_file(package_version, tarball_parent_dir, args.filename)
+        update_spec_files(package_version, tarball_parent_dir, args.filename)
