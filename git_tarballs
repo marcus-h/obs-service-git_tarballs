@@ -92,9 +92,8 @@ def parse_changelog(changelog):
 
     """
     try:
-        # FIXME: we can actually ignore Merge commits altogether.
         return re.finditer(r'^commit (?P<commit>.*?)$'
-                           '.*?'
+                           '(?:\nMerge:\s+\S+\s+(?P<mergecommit>.*?)\n|\n)'
                            '^Author:\s+(?P<author>.*?)$'
                            '.*?'
                            '^Date:\s+(?P<date>.*?)$'
@@ -194,11 +193,23 @@ def create_changes(changes_list, package_version, package_commit, email):
         print "There are no new changes."
         return
 
-    timestamp = datetime.utcnow().strftime('%a %b %e %T UTC %Y')
+    messages = []
+    merged = []
+    for c in changes_diff:
+        if c['mergecommit']:
+            m = c['message']
+            messages.append(m[len('Merge "'):m.rfind('"')])
+            merged.append(c['mergecommit'])
+        # do not add a message that was already added via "Merge..." commits
+        elif c['commit'][:7] not in merged:
+            messages.append(c['message'])
 
-    # XXX Merge commits should be skipped when parsing the changelog
-    commits = "  + " + "\n  + ".join(c['message'] for c in changes_diff
-                                     if not c['message'].startswith('Merge "'))
+    # Let's use chronological order
+    messages.reverse()
+
+    timestamp = datetime.utcnow().strftime('%a %b %e %T UTC %Y')
+    commits = "  + " + "\n  + ".join(messages)
+
     change = (
         '--------------------------------------------------------------------'
         '\n%(timestamp)s - %(email)s\n'
