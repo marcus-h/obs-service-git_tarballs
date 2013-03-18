@@ -105,7 +105,7 @@ def parse_changelog(changelog):
         sys.exit("Could not parse ChangeLog file.")
 
 
-def get_commit_from_spec(package):
+def get_commit_from_spec(package, plain_version=False):
     """Parse the spec's Version field for a previously set commit version
 
     :package: name of the package
@@ -115,8 +115,12 @@ def get_commit_from_spec(package):
     """
     try:
         f = open(package + '.spec')
-        return re.search(r'^Version:\s+.*\+git\.\d+\.(.*?)(\s+#.*)?$',
-                         f.read(), flags=re.MULTILINE).group(1)
+        if plain_version:
+            return re.search(r'^Version:\s+.*\.g(.*?)(\+git.*)?$',
+                             f.read(), flags=re.MULTILINE).group(1)
+        else:
+            return re.search(r'^Version:\s+.*\+git\.\d+\.(.*?)(\s+#.*)?$',
+                             f.read(), flags=re.MULTILINE).group(1)
     except AttributeError:
         return None
     finally:
@@ -249,6 +253,7 @@ if __name__ == '__main__':
                         '(default: ".*-([^-]+)")')
     parser.add_argument('--outdir',
                         help='osc service parameter that does nothing')
+    parser.add_argument('--plain-version', action="store_true", help='use upstream version string')
     args = parser.parse_args()
 
     if not args.filename:
@@ -265,8 +270,12 @@ if __name__ == '__main__':
         get_parent_dir_and_version_from_tarball(
             args.filename, args.version_regexp)
 
-    package_commit = get_commit_from_spec(args.package)
-    package_version = package_version(upstream_version, upstream_commit)
+    if args.plain_version:
+        package_commit = get_commit_from_spec(args.package, plain_version=True)
+        package_version = upstream_version
+    else:
+        package_commit = get_commit_from_spec(args.package)
+        package_version = package_version(upstream_version, upstream_commit)
     if not package_commit:
         # on first run, we only set the fields in the spec file;
         # there are no changes
