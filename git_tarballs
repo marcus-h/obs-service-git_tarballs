@@ -109,6 +109,7 @@ def get_commit_from_spec(package, plain_version=False):
     """Parse the spec's Version field for a previously set commit version
 
     :package: name of the package
+    :plain_version: expect upstream version string instead of customized one
 
     Returns None in case no commit could be read.
 
