@@ -35,6 +35,19 @@ class TestGitTarballs(unittest.TestCase):
             self.assertEqual('0c8c2a3',
                              ghb.get_commit_from_spec('example_pkg'))
 
+    def test_version_parse_plain(self):
+        with mock_open(u"\nVersion: 2013.1.a110.g975c5ac\n"):
+            self.assertEqual('975c5ac',
+                             ghb.get_commit_from_spec('example_pkg',
+                                                      plain_version=True))
+
+    def test_version_parse_plain_from_custom(self):
+        with mock_open(u"\nVersion: 2013.1.a110.g975c5ac+git.1363479139.975c5ac\n"):
+            self.assertEqual('975c5ac',
+                             ghb.get_commit_from_spec('example_pkg',
+                                                      plain_version=True))
+
+
 
 class TestGitParseUpdateSpec(unittest.TestCase):
     def test_normal(self):
