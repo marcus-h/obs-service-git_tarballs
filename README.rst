@@ -22,18 +22,18 @@ On the first run, ``git_tarballs`` will just set the spec file's
 be updated with commit message information when newer commits (compared
 to the one now set in ``Version``) are found.
 
+Dependencies
+------------
+
 Up to date requirements are kept in the files ``pip-requires`` and
 ``test-requires``
 
-To run the testsuite, just use ``nosetests`` or ``python -m unittest
-discover`` (on python2.7).
+Contributing
+------------
 
-TODO
+You can submit or ask for improvements using github's Pull Requests or Issues. If you're sending a patch, please make sure the testsuite is still running and also run flake8 on the files you've modified. It would be great if you could also modify this README file to describe new functionality and add tests.
 
-* ignore Merge commits
-* use current user's email address in .changes file
-* stop parsing when we reach the last known commit
-* tests
+You can take a look at the .travis.yml file to see how the testsuite and flake8 are being run.
 
 
 .. _Open Build Service: http://openbuildservice.org/
