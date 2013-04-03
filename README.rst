@@ -2,6 +2,9 @@
  OBS service for downloading git tarballs
 =========================================
 
+.. image:: https://travis-ci.org/openSUSE/obs-service-git_tarballs.png
+   :target: https://travis-ci.org/openSUSE/obs-service-git_tarballs
+
 This is an `Open Build Service`_ source service. It downloads a tarball and parses its git ChangeLog file for information about recent changes which then go to the package's .changes file.
 
 The ``Version`` field will be set to
