@@ -7,4 +7,4 @@ install:
  - pip install -r test-requires --use-mirrors
 script:
  - nosetests
- - pep8 git_tarballs *py
+ - flake8 git_tarballs *py
