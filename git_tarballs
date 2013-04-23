@@ -136,9 +136,11 @@ def get_package_version(upstream_version, upstream_commit):
 
 def parse_update_spec_file(contents, package_version,
                            tarball_parent_dir, filename):
-    contents = re.sub(r'\n((Version:\s+).*)\n',
-                      r'\n\g<2>%s\n' % package_version,
-                      contents, count=1)
+
+    if package_version:
+        contents = re.sub(r'\n((Version:\s+).*)\n',
+                          r'\n\g<2>%s\n' % package_version,
+                          contents, count=1)
     # only replace the "-n" option, leave everything else intact
     contents = re.sub(r'\n(%setup.*?-n\s+)(\S+?)(|[ \t]+.*?)\n',
                       r'\n\g<1>%s\g<3>\n' % tarball_parent_dir,
@@ -286,6 +288,8 @@ if __name__ == '__main__':
 
     changes = create_changes(changes_list, pkg_version, pkg_commit, args.email)
 
-    update_spec_files(pkg_version, tarball_parent_dir, args.filename)
+    # Don't update pkg_version without changes (but still replace the rest)
+    update_spec_files(pkg_version if changes else None,
+                      tarball_parent_dir, args.filename)
     if changes:
         update_changes_file(args.package, changes)
