@@ -57,6 +57,13 @@ class TestGitParseUpdateSpec(unittest.TestCase):
             "\nVersion: 13.14\n%setup -n foo\nSource: foo-13.14.tar.gz\n",
             "14.0", "bar", "bar-14.0.tar.gz"))
 
+    def test_no_update(self):
+        self.assertEqual(
+            "\nVersion: 13.14\n%setup -n bar\nSource: bar-14.0.tar.gz\n",
+            ghb.parse_update_spec_file(
+            "\nVersion: 13.14\n%setup -n foo\nSource: foo-13.14.tar.gz\n",
+            None, "bar", "bar-14.0.tar.gz"))
+
     def test_source_zero(self):
         self.assertEqual(
             "\nVersion: 14.0\n%setup -n bar\nSource: bar-14.0.tar.gz\n",
