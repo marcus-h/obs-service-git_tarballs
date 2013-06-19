@@ -223,7 +223,7 @@ def create_changes(changes_list, package_version, package_commit, email):
     commits = "  + " + "\n  + ".join(messages)
 
     change = (
-        '--------------------------------------------------------------------'
+        '-------------------------------------------------------------------'
         '\n%(timestamp)s - %(email)s\n'
         '\n'
         '- Update to version %(package_version)s:\n'
