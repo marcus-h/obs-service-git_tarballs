@@ -19,6 +19,6 @@
     <description>Regular expression for extracting version from top-level directory in tarball (default: ".*-([^-]+)")</description>
   </param>
   <param name="plain-version">
-    <description>Use plain upstream version string instead of generating one including "+git.$TIMESTAMP.$COMMITHASH" in the spec and changes files</description>
+    <description>Use plain upstream version string instead of generating one including "+git.$TIMESTAMP.$COMMITHASH" in the spec and changes files. The upstream version string will be extracted from the top level directory's name in the downloaded tarball.</description>
   </param>
 </service>
