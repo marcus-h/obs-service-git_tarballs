@@ -48,9 +48,10 @@ def get_changelog_from_tarball(tar_name):
                               if f.endswith('ChangeLog'))
         t = tar.getmember(changelog_file)
         changelog = tar.extractfile(t).read()
+    except tarfile.ReadError:
+        sys.exit("Could not read the file %s" % tar_name)
     except StopIteration:
         sys.exit("Could not find a 'ChangeLog' file. ")
-    finally:
         tar.close()
     return changelog
 
