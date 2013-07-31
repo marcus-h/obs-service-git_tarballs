@@ -1,0 +1,5 @@
+-r requirements.txt
+mock
+nose
+flake8
+pep8-naming

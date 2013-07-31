@@ -28,8 +28,8 @@ to the one now set in ``Version``) are found.
 Dependencies
 ------------
 
-Up to date requirements are kept in the files ``pip-requires`` and
-``test-requires``
+Up to date requirements are kept in the files ``requirements.txt`` and
+``test-requirements.txt``
 
 Contributing
 ------------
