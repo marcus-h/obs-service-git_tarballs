@@ -6,4 +6,4 @@ install:
  - pip install -r test-requirements.txt --use-mirrors
 script:
  - nosetests
- - flake8 git_tarballs *py
+ - flake8 --ignore=E122 git_tarballs *py
