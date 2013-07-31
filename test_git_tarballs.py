@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from contextlib import contextmanager
+import contextlib
 import imp
 import io
 import unittest
@@ -185,7 +185,7 @@ class TestGitParseUpdateSpec(unittest.TestCase):
                 "14.0", "bar", "bar-14.0.tar.gz"))
 
 
-@contextmanager
+@contextlib.contextmanager
 def mock_open(contents):
     with mock.patch("__builtin__.open", return_value=io.StringIO(contents)):
         yield

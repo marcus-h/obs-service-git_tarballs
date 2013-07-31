@@ -57,7 +57,7 @@ def get_changelog_from_tarball(tar_name):
 
 
 def get_parent_dir(tar_name):
-    """Return the filename of the top-level directory inside the tarball"""
+    """Return the filename of the top-level directory inside the tarball."""
     tar = tarfile.open(tar_name)
     parent_dir = tar.firstmember.name
     tar.close()
@@ -66,7 +66,7 @@ def get_parent_dir(tar_name):
 
 
 def parse_version_from_parent_dir(parent_dir, version_regexp):
-    """Parse the parent_dir filename and return a version string"""
+    """Parse the parent_dir filename and return a version string."""
     try:
         match = re.match(version_regexp, parent_dir)
     except re.error as e:
@@ -239,7 +239,8 @@ def create_changes(changes_list, package_version, package_commit, email):
         '\n'
         '- Update to version %(package_version)s:\n'
         '%(commits)s\n'
-        '\n' % locals())
+        '\n' % {"timestamp": timestamp, "email": email,
+                "package_version": package_version, "commits": commits})
 
     return change
 
