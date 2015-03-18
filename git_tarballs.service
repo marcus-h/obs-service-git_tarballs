@@ -1,24 +1,24 @@
 <service name="git_tarballs">
   <summary>Download tarballs and update package data</summary>
   <description>This service downloads tarballs and updates the spec file version and changes file</description>
-  <param name="url">
+  <parameter name="url">
     <description>URL of the tarball to download. It should contain a ChangeLog file in git log format.</description>
     <required/>
-  </param>
-  <param name="package">
+  </parameter>
+  <parameter name="package">
     <description>OBS package name.</description>
-  </param>
-  <param name="filename">
+  </parameter>
+  <parameter name="filename">
     <description>Name of the filename where the tarball will be downloaded.</description>
-  </param>
-  <param name="email">
+  </parameter>
+  <parameter name="email">
     <description>User's email that will be used to sign the rpm's .changes file</description>
     <required/>
-  </param>
-  <param name="version-regexp">
+  </parameter>
+  <parameter name="version-regexp">
     <description>Regular expression for extracting version from top-level directory in tarball (default: ".*-([^-]+)")</description>
-  </param>
-  <param name="plain-version">
+  </parameter>
+  <parameter name="plain-version">
     <description>Use plain upstream version string instead of generating one including "+git.$TIMESTAMP.$COMMITHASH" in the spec and changes files. The upstream version string will be extracted from the top level directory's name in the downloaded tarball.</description>
-  </param>
+  </parameter>
 </service>
