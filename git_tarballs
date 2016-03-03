@@ -256,6 +256,16 @@ def update_changes_file(package, changes):
         f.close()
 
 
+def _check_filenames(*filenames):
+    for filename in filenames:
+        basename = os.path.basename(filename)
+        if os.path.abspath(filename) != os.path.abspath(basename):
+            # no arbitrary filename, please
+            msg = ("'--filename %s' does not resolve to a file in the "
+                   "current directory") % filename
+            sys.exit(msg)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Git Tarballs')
     parser.add_argument('--url', required=True,
@@ -281,6 +291,7 @@ if __name__ == '__main__':
     if not args.package:
         args.package = os.getcwd().rsplit("/", 1)[1]
 
+    _check_filenames(args.filename, args.package)
     download_tarball(args.url, args.filename)
 
     changelog = get_changelog_from_tarball(args.filename)
